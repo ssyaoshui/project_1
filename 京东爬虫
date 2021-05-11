@@ -1,0 +1,25 @@
+import requests
+from bs4 import BeautifulSoup
+import openpyxl
+workbook = openpyxl.Workbook()
+sheet = workbook.active
+sheet.title = '京东爬虫'
+sheet['A1'] = '标题'
+sheet['B1'] = '网址'
+
+headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.51'}
+start_url = "https://search.jd.com"
+response = requests.get(start_url, headers=headers)
+response.encoding = 'utf-8'
+
+bs_list = BeautifulSoup(response.text,'html.parser')
+book_list = bs_list.find_all('li',class_='gl-item')
+for book in book_list:
+    book_url = book.find('div',class_="p-name")['href']
+    book_name = book.find('div',class_='p-name').find('em').text.replace(' ','')
+    print(book_name,book_url,'\n')
+    sheet.append([book_name,book_url])
+    workbook.save('京东爬虫.xlsx')
+    workbook.close()
+
+
