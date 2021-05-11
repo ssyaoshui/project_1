@@ -1,0 +1,108 @@
+student_info_list = []
+#系统功能引导
+def print_menu():
+    print("=" * 40)
+    print('{:^30}'.format('学生管理系统'))
+    print("1.添加学生信息"+' '*10,end='')
+    print("2.删除学生信息")
+    print("3.修改学生信息"+' '*10,end='')
+    print("4.学号排序学生信息")
+    print('5.查找学生'+' '*13,end='')
+    print('6.显示所有学生信息')
+    print("{:^50}".format('0.退出系统'))
+    print("=" * 40)
+
+#增加学生信息
+def add_students():
+    name = input('请输入学生的姓名:')
+    sex = input('请输入学生的性别:')
+    student_ID = input('请输入学生的学号:')
+    phonenumber = input('请输入学生的电话号码:')
+    new_student_dict = {}
+    new_student_dict['name'] = name
+    new_student_dict['sex'] = sex
+    new_student_dict['student_ID'] = student_ID
+    new_student_dict['phonenumber'] = phonenumber
+    student_info_list.append(new_student_dict)
+
+#查找学生
+def find_student():
+    print("=" * 40)
+    print('选择查找方式:')
+    print('1.学号查找'+ ' '*5 +'2.姓名查找' + ' '*5 + '3.电话号码查找')
+    print("=" * 40)
+
+    choice = eval(input('输入查找方式序号:'))
+    if choice == 1:
+        find_student_ID = input('输入查找的学号:')
+        for student_info in student_info_list:
+            if find_student_ID == student_info['student_ID']:
+                print(student_info)
+                return student_info
+
+
+    if choice == 2:
+        find_student_name = input('输入查找的学生姓名:')
+        for student_info in student_info_list:
+            if student_info['name'] == find_student_name:
+                print(student_info)
+                return student_info
+
+
+    if choice == 3:
+        find_student_phonenumber = input('输入学生的电话号码:')
+        for student_info in student_info_list:
+            if student_info['phonenumber'] == find_student_phonenumber:
+                print(student_info)
+                return student_info
+
+
+#删除学生
+def del_student():
+    d_student = find_student()
+    student_info_list.remove(d_student)
+    print('该生已经被删除')
+
+#修改学生信息
+def change_student_info():
+    c_student= find_student()
+    print("=" * 40)
+    print('选择修改信息:')
+    print('1.学号'+ ' '*5 +'2.姓名' + ' '*5 + '3.电话号码')
+    print("=" * 40)
+    change_method = eval(input('请输入要修改的信息序号:'))
+    change = (input('请输入修改后信息:'))
+
+    if change_method == 1:
+        c_student['student_ID'] = change
+    if change_method == 2:
+        c_student['name'] = change
+    if change_method == 3:
+        c_student['phonenumber'] = change
+
+#排序
+def sort_student():
+    print('按照学号的顺序排序')
+    sorted(student_info_list,key=lambda x:x['student_ID'])
+
+if __name__ == '__main__':
+    while 1:
+        print_menu()
+        method = eval(input('输入需要功能序号(输入‘5’查看所有学习信息):'))
+        if method == 1:
+            add_students()
+        if method == 2:
+            del_student()
+        if method == 3:
+            change_student_info()
+        if method == 4:
+            sort_student()
+        if method == 5:
+            find_student()
+        if method == 6:
+            print(student_info_list)
+        if method == 0:
+            break
+
+
+
