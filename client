@@ -1,0 +1,39 @@
+import socket
+import threading
+#客户端
+nickname = ''
+outstring = ''
+instring = ' '
+def client_send(servser):
+    global outstring
+    while 1:#一直监听，如有输入就发送到服务器端
+
+        string = input('输入信息:')
+        out_string = nickname + ":" + string
+        server.send(bytes(out_string,encoding='utf-8'))
+
+def client_accept(sevser):
+    global instring
+    while 1:
+        try:
+            instring = server.recv(1024)#一次最多接受1024字节，接收数据
+            if not instring:
+                break
+            if outstring != instring:
+                print(instring)
+        except:
+            break
+
+
+nickname = input('输入你的昵称:')
+ip = input('输入你的ip地址:')
+port = 8888
+server = socket.socket()#创建socket
+server.connect((ip,port))#连接
+
+server.send(bytes(nickname,encoding='utf-8'))
+
+td_send = threading.Thread(target=client_send,args=(server,))#发送消息的线程
+td_send.start()
+td_accept = threading.Thread(target=client_accept,args=(server,))#元组
+td_accept.start()
