@@ -1,0 +1,10 @@
+import time
+
+def show_time(func):
+    def wrapper(*args):
+        t1 = time.time()
+        result = func()
+        t2 = time.time()
+        print("该程序总共花费的时间是{}".format(t2-t1))
+        return result
+    return wrapper()
